@@ -14,6 +14,7 @@ typedef struct{
 void CargarTareas(Tarea **tareas,int c);
 void OrdenarTareas(Tarea **todastareas,Tarea **tareaspendientes,Tarea **tareasrealizadas,int c);
 void MostrarTareas(Tarea **tareas,int c);
+Tarea* BusquedaPorPalabra(Tarea **tareas,int c,char *pal);
 
 
 int main(){
@@ -37,6 +38,15 @@ OrdenarTareas(todas_tareas,tareas_pendientes,tareas_realizadas,cant);
 MostrarTareas(tareas_realizadas,cant);
 
 
+/////////////////////////BUSQUEDA POR PALABRA CLAVE/////////////////////
+printf("\nIngrese palabra clave de la tarea que desea buscar: ");
+scanf("%s",palabra);
+buscar_palabra = BusquedaPorPalabra(todas_tareas,cant,palabra);
+if(buscar_palabra == NULL){
+    printf("No se encontro ninguna tarea asociada a la palabra clave '%s'",palabra);
+}else{
+    printf("La tarea con palabra clave '%s' es:\nID tarea: %d\nDescripcion: %s\nDuracion: %d",palabra,buscar_palabra->TareaID,buscar_palabra->Descripcion,buscar_palabra->Duracion);
+}
 
 
     scanf(" %c");
@@ -98,3 +108,11 @@ void MostrarTareas(Tarea **tareas,int c){
 }
 
 
+Tarea* BusquedaPorPalabra(Tarea **tareas,int c,char *pal){
+    for(int j=0;j<c;j++){
+        if(strcmp(tareas[j]->Descripcion,pal) == 0){
+            return tareas[j];
+        }
+    }
+    return NULL;
+}
