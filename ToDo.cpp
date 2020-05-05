@@ -1,0 +1,100 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+#include <string.h>
+
+
+typedef struct{
+    int TareaID;   //Numerado en ciclo iterativo
+    char* Descripcion;
+    int Duracion;  //entre 10-100
+}Tarea;
+
+
+void CargarTareas(Tarea **tareas,int c);
+void OrdenarTareas(Tarea **todastareas,Tarea **tareaspendientes,Tarea **tareasrealizadas,int c);
+void MostrarTareas(Tarea **tareas,int c);
+
+
+int main(){
+srand (time(NULL));
+
+int cant,id;
+char descripcion[100],palabra[50];
+Tarea **todas_tareas,**tareas_pendientes, **tareas_realizadas;
+Tarea *buscar_tarea,*buscar_palabra;
+
+printf("Ingrese la cantidad de tareas a cargar: ");
+scanf("%d",&cant);
+
+todas_tareas = (Tarea**) malloc(sizeof(Tarea*) * cant);
+tareas_pendientes = (Tarea**) malloc(sizeof(Tarea*) * cant);
+tareas_realizadas = (Tarea**) malloc(sizeof(Tarea*) * cant);
+
+
+CargarTareas(todas_tareas,cant);
+OrdenarTareas(todas_tareas,tareas_pendientes,tareas_realizadas,cant);
+MostrarTareas(tareas_realizadas,cant);
+
+
+
+
+    scanf(" %c");
+    return 0;
+}
+
+
+
+
+void CargarTareas(Tarea **tareas,int c){
+    char descripcion[100];
+    for(int i=0;i<c;i++){
+    
+    tareas[i] = (Tarea*) malloc(sizeof(Tarea));
+    tareas[i]->TareaID = i;
+    tareas[i]->Duracion = rand() % 91+10;
+
+    
+    printf("Descripcion de la tarea ID %d: ",i);
+    scanf("%s",descripcion);
+    tareas[i]->Descripcion = (char*) malloc(strlen(descripcion)+1 * sizeof(char));
+    strcpy(tareas[i]->Descripcion,descripcion);
+
+    }
+}
+
+
+void OrdenarTareas(Tarea **todastareas,Tarea **tareaspendientes,Tarea **tareasrealizadas,int c){
+    char respuesta[3];
+    for(int i=0;i<c;i++){
+        printf("\nSe completo la tarea ID: %d?\n Descripcion de tarea: %s\n SI/NO: ",i,todastareas[i]->Descripcion);
+        scanf("%s",respuesta);
+        if(strcmp(respuesta,"SI") == 0 || strcmp(respuesta,"si") == 0 || strcmp(respuesta,"Si") == 0){
+            tareasrealizadas[i] = (Tarea*) malloc(sizeof(Tarea));
+            tareaspendientes[i] = (Tarea*) malloc(sizeof(Tarea));
+
+            tareasrealizadas[i] = todastareas[i];
+            tareaspendientes[i] = NULL;
+            
+        }
+        else{
+            tareasrealizadas[i] = NULL;
+            tareaspendientes[i] = todastareas[i];
+        }
+        
+    }
+}
+
+
+void MostrarTareas(Tarea **tareas,int c){
+    for(int i=0;i<c;i++){
+        if(tareas[i] != NULL){
+            printf("\nID de tarea: %d\n",tareas[i]->TareaID);
+            printf("Descripcion: %s\n",tareas[i]->Descripcion);
+            printf("Duracion: %d\n",tareas[i]->Duracion);
+            printf("--------------------------------------\n");
+        }
+    }
+}
+
+
