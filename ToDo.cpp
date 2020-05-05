@@ -14,6 +14,7 @@ typedef struct{
 void CargarTareas(Tarea **tareas,int c);
 void OrdenarTareas(Tarea **todastareas,Tarea **tareaspendientes,Tarea **tareasrealizadas,int c);
 void MostrarTareas(Tarea **tareas,int c);
+Tarea* BuscarTarea(Tarea **tareas,int c,int i);
 
 
 int main(){
@@ -36,7 +37,15 @@ CargarTareas(todas_tareas,cant);
 OrdenarTareas(todas_tareas,tareas_pendientes,tareas_realizadas,cant);
 MostrarTareas(tareas_realizadas,cant);
 
-
+///////////////////////////BUSQUEDA POR ID///////////////////////////////////
+printf("\nIngrese ID de la tarea que desea buscar: ");
+scanf("%d",&id);
+buscar_tarea = BuscarTarea(todas_tareas,cant,id);
+if(buscar_tarea == NULL){
+    printf("No se encontro ninguna tarea asociada al ID: %d",id);
+}else{
+    printf("La tarea con ID %d es: %s\n",id,buscar_tarea->Descripcion);
+}
 
 
     scanf(" %c");
@@ -98,3 +107,14 @@ void MostrarTareas(Tarea **tareas,int c){
 }
 
 
+Tarea* BuscarTarea(Tarea **tareas,int c,int i){
+    
+   
+
+    for(int j=0;j<c;j++){
+        if(tareas[j]->TareaID == i){
+            return tareas[j];
+        }
+    }  
+    return NULL;
+}
