@@ -23,6 +23,8 @@ Tnodo *CrearNodo(int id);
 void AgregarTarea(Tnodo **start,Tnodo *tarea);
 void MostrarTareas(Tnodo *start,Tnodo *realizadas);
 Tnodo *QuitarNodo(Tnodo **start,int id);
+void BuscarPendientes(Tnodo *start);
+void BuscarRealizadas(Tnodo *realizadas);
 
 int main(){
 srand (time(NULL));
@@ -41,7 +43,9 @@ Tnodo * Trealizadas = CrearListaVacia();
 		printf("1.Agregar Tarea\n");
         printf("2.Mostrar Tareas Realizadas y Pendientes\n");
 		printf("3.Marcar Tareas ya Realizadas\n");
-		printf("4.Salir\n");
+        printf("4.Buscar por ID en tareas PENDIENTES:\n");
+        printf("5.Buscar por ID en tareas REALIZADAS:\n");
+		printf("6.Salir\n");
         printf("Opcion: ");
 		scanf("%d", &opcion);
 
@@ -72,12 +76,20 @@ Tnodo * Trealizadas = CrearListaVacia();
                         AgregarTarea(&Trealizadas,NodoAux);
                     }else{
                         aux = aux->siguiente;
-                    }
-                    
+                    }  
                 }
+                break;
+            }
+            case 4: {
+                BuscarPendientes(Tpendientes);
+                break;
+            }
+            case 5:{
+                BuscarRealizadas(Trealizadas);
+                break;
             }
         }
-    }while(opcion != 4);
+    }while(opcion != 6);
 
     scanf(" %c");
     return 0;
@@ -162,4 +174,48 @@ Tnodo *QuitarNodo(Tnodo **start,int id){
 
 
 
+void BuscarPendientes(Tnodo *start){
+    int IDaBuscar;
+    Tnodo *NodoEncontrado = NULL;
+    printf("Ingrese el ID de la tarea a buscar: ");
+    scanf("%d",&IDaBuscar);
 
+    while(start != NULL){
+        if(start->T.TareaID == IDaBuscar){
+            NodoEncontrado = start;
+            printf("\n\n----------------------------------");
+            printf("\nTAREA ENCONTRADA\nID: %d\nDescripcion: %s\nDuracion: %d\n",NodoEncontrado->T.TareaID,NodoEncontrado->T.Descripcion,NodoEncontrado->T.Duracion);
+            printf("----------------------------------\n\n");
+            break;
+        }else{
+           start = start->siguiente;
+        }    
+    }
+    if(NodoEncontrado == NULL){
+        printf("\n-----\nNO SE ENCONTRO NINGUNA TAREA!\n-----\n");
+    }
+}
+
+
+void BuscarRealizadas(Tnodo *realizadas){
+    int IDaBuscar;
+    Tnodo *NodoEncontrado = NULL;
+    printf("Ingrese el ID de la tarea a buscar: ");
+    scanf("%d",&IDaBuscar);
+
+    while(realizadas != NULL){
+        if(realizadas->T.TareaID == IDaBuscar){
+            NodoEncontrado = realizadas;
+            printf("\n\n----------------------------------");
+            printf("\nTAREA ENCONTRADA\nID: %d\nDescripcion: %s\nDuracion: %d\n",NodoEncontrado->T.TareaID,NodoEncontrado->T.Descripcion,NodoEncontrado->T.Duracion);
+            printf("\n\n----------------------------------\n\n");
+            break;
+        }else{
+           realizadas = realizadas->siguiente;
+        }
+        
+    }
+    if(NodoEncontrado == NULL){
+        printf("\n-----\nNO SE ENCONTRO NINGUNA TAREA!\n-----\n");
+    }
+}
